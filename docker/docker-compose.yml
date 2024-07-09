@@ -1,0 +1,32 @@
+services:
+  master_node:
+    container_name: master_node
+    environment:
+      SSH_PORT: 2222
+    extends:
+      file: base-ssh.yml
+      service: ubuntu_ssh
+    ports:
+      - "2222:22"
+      - "6443:6443"
+
+    networks:
+      - link_network
+
+  worker_node:
+    container_name: worker_node
+    environment:
+      SSH_PORT: 3333
+    extends:
+      file: base-ssh.yml
+      service: ubuntu_ssh
+    ports:
+      - "3333:22"
+
+    networks:
+      - link_network
+
+networks:
+  link_network:
+    driver:
+      bridge

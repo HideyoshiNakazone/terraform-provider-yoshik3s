@@ -1,0 +1,6 @@
+services:
+  ubuntu_ssh:
+    build:
+      context: .
+      dockerfile: ./ubuntu.dockerfile
+    privileged: true
