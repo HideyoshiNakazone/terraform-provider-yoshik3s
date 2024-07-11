@@ -21,45 +21,54 @@ type YoshiK3SWorkerNodeResourceModel struct {
 
 var YoshiK3SWorkerNodeResourceModelSchema = map[string]schema.Attribute{
 	"id": schema.StringAttribute{
-		MarkdownDescription: "The ID of the master node.",
+		Description:         nodeResourceDescriptions["id"],
+		MarkdownDescription: nodeResourceDescriptions["id"],
 		Computed:            true,
 		PlanModifiers: []planmodifier.String{
 			stringplanmodifier.UseStateForUnknown(),
 		},
 	},
 	"master_server_address": schema.StringAttribute{
+		Description:         "The address of the master node.",
 		MarkdownDescription: "The address of the master node.",
 		Required:            true,
 	},
 	"cluster": schema.SingleNestedAttribute{
-		MarkdownDescription: "The cluster to which the master node belongs.",
+		Description:         nodeResourceDescriptions["cluster"],
+		MarkdownDescription: nodeResourceDescriptions["cluster"],
 		Required:            true,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				MarkdownDescription: "The ID of the K3S Cluster.",
+				MarkdownDescription: clusterResourceDescriptions["id"],
+				Description:         clusterResourceDescriptions["id"],
 				Optional:            true,
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "The name of the K3S Cluster.",
+				MarkdownDescription: clusterResourceDescriptions["name"],
+				Description:         clusterResourceDescriptions["name"],
 				Optional:            true,
 			},
 			"token": schema.StringAttribute{
-				MarkdownDescription: "The token	of the cluster to which the master node belongs.",
+				MarkdownDescription: clusterResourceDescriptions["token"],
+				Description:         clusterResourceDescriptions["token"],
 				Required:            true,
 			},
 			"k3s_version": schema.StringAttribute{
-				MarkdownDescription: "The version of the cluster to which the master node belongs.",
+				MarkdownDescription: clusterResourceDescriptions["k3s_version"],
+				Description:         clusterResourceDescriptions["k3s_version"],
 				Optional:            true,
 			},
 		},
 	},
 	"node_connection": schema.SingleNestedAttribute{
-		MarkdownDescription: "The connection details of the master node.",
+		Description:         nodeResourceDescriptions["node_connection"],
+		MarkdownDescription: nodeResourceDescriptions["node_connection"],
 		Required:            true,
 		Attributes:          YoshiK3SConnectionModelSchema,
 	},
 	"node_options": schema.ListAttribute{
-		MarkdownDescription: "The options of the master node.",
+		Description:         nodeResourceDescriptions["node_options"],
+		MarkdownDescription: nodeResourceDescriptions["node_options"],
 		ElementType:         types.StringType,
 		Optional:            true,
 	},

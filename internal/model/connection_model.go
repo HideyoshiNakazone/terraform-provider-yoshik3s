@@ -14,31 +14,46 @@ type YoshiK3SConnectionModel struct {
 	PrivateKeyPassphrase types.String `tfsdk:"private_key_passphrase"`
 }
 
+var connectResourceDescriptions = map[string]string{
+	"host":                   "The hostname or IP address of the master node.",
+	"port":                   "The SSH port of the master node.",
+	"user":                   "The SSH user of the master node.",
+	"password":               "The SSH password of the master node.",
+	"private_key":            "The SSH private key of the master node.",
+	"private_key_passphrase": "The passphrase for the SSH private key of the master node.",
+}
+
 var YoshiK3SConnectionModelSchema = map[string]schema.Attribute{
 	"host": schema.StringAttribute{
-		MarkdownDescription: "The hostname or IP address of the master node.",
+		Description:         connectResourceDescriptions["host"],
+		MarkdownDescription: connectResourceDescriptions["host"],
 		Required:            true,
 	},
 	"port": schema.StringAttribute{
-		MarkdownDescription: "The SSH port of the master node.",
+		Description:         connectResourceDescriptions["port"],
+		MarkdownDescription: connectResourceDescriptions["port"],
 		Required:            true,
 	},
 	"user": schema.StringAttribute{
-		MarkdownDescription: "The SSH user of the master node.",
+		Description:         connectResourceDescriptions["user"],
+		MarkdownDescription: connectResourceDescriptions["user"],
 		Required:            true,
 	},
 	"password": schema.StringAttribute{
-		MarkdownDescription: "The SSH password of the master node.",
+		Description:         connectResourceDescriptions["password"],
+		MarkdownDescription: connectResourceDescriptions["password"],
 		Optional:            true,
 		Sensitive:           true,
 	},
 	"private_key": schema.StringAttribute{
-		MarkdownDescription: "The SSH private key of the master node.",
+		Description:         connectResourceDescriptions["private_key"],
+		MarkdownDescription: connectResourceDescriptions["private_key"],
 		Optional:            true,
 		Sensitive:           true,
 	},
 	"private_key_passphrase": schema.StringAttribute{
-		MarkdownDescription: "The passphrase for the SSH private key of the master node.",
+		Description:         connectResourceDescriptions["private_key_passphrase"],
+		MarkdownDescription: connectResourceDescriptions["private_key_passphrase"],
 		Optional:            true,
 		Sensitive:           true,
 	},

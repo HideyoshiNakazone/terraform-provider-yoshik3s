@@ -38,6 +38,16 @@ resource "yoshik3s_master_node" "example_master_node" {
 }
 
 
+locals {
+  example_cluster_workers = {
+    worker1 = {
+      host = "localhost"
+      port = "3333"
+    }
+  }
+}
+
+
 resource "yoshik3s_worker_node" "example_worker_node" {
   master_server_address = "master_node"
 
@@ -46,9 +56,11 @@ resource "yoshik3s_worker_node" "example_worker_node" {
     k3s_version = yoshik3s_cluster.example_cluster.k3s_version
   }
 
+  for_each = local.example_cluster_workers
+
   node_connection = {
-    host     = "localhost"
-    port     = "3333"
+    host     = each.value.host
+    port     = each.value.port
     user     = "sshuser"
     password = "password"
   }

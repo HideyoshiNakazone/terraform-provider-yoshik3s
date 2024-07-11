@@ -16,25 +16,36 @@ type YoshiK3SClusterResourceModel struct {
 	ClusterVersion types.String `tfsdk:"k3s_version"`
 }
 
+var clusterResourceDescriptions = map[string]string{
+	"id":          "The ID of the K3S Cluster.",
+	"name":        "The name of the K3S Cluster.",
+	"token":       "The token of K3S to be used in the configuration of the K3S Cluster.",
+	"k3s_version": "The version of K3S to be used in the configuration of the K3S Cluster.",
+}
+
 var YoshiK3SClusterResourceModelSchema = map[string]schema.Attribute{
 	"id": schema.StringAttribute{
-		MarkdownDescription: "The ID of the K3S Cluster.",
+		MarkdownDescription: clusterResourceDescriptions["id"],
+		Description:         clusterResourceDescriptions["id"],
 		Computed:            true,
 		PlanModifiers: []planmodifier.String{
 			stringplanmodifier.UseStateForUnknown(),
 		},
 	},
 	"name": schema.StringAttribute{
-		MarkdownDescription: "The name of the K3S Cluster.",
+		MarkdownDescription: clusterResourceDescriptions["name"],
+		Description:         clusterResourceDescriptions["name"],
 		Optional:            true,
 	},
 	"token": schema.StringAttribute{
-		MarkdownDescription: "The token of K3S to be used in the configuration of the K3S Cluster.",
+		MarkdownDescription: clusterResourceDescriptions["token"],
+		Description:         clusterResourceDescriptions["token"],
 		Required:            true,
 		Sensitive:           true,
 	},
 	"k3s_version": schema.StringAttribute{
-		MarkdownDescription: "The version of K3S to be used in the configuration of the K3S Cluster.",
+		MarkdownDescription: clusterResourceDescriptions["k3s_version"],
+		Description:         clusterResourceDescriptions["k3s_version"],
 		Optional:            true,
 	},
 }
