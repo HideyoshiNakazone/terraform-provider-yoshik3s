@@ -17,7 +17,7 @@ K3S Cluster Resource
 
 ### Required
 
-- `token` (String) The token of K3S to be used in the configuration of the K3S Cluster.
+- `token` (String, Sensitive) The token of K3S to be used in the configuration of the K3S Cluster.
 
 ### Optional
 

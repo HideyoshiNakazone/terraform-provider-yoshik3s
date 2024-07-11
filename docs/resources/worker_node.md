@@ -54,6 +54,6 @@ Required:
 
 Optional:
 
-- `password` (String) The SSH password of the master node.
-- `private_key` (String) The SSH private key of the master node.
-- `private_key_passphrase` (String) The passphrase for the SSH private key of the master node.
+- `password` (String, Sensitive) The SSH password of the master node.
+- `private_key` (String, Sensitive) The SSH private key of the master node.
+- `private_key_passphrase` (String, Sensitive) The passphrase for the SSH private key of the master node.

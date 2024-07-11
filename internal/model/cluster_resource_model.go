@@ -31,6 +31,7 @@ var YoshiK3SClusterResourceModelSchema = map[string]schema.Attribute{
 	"token": schema.StringAttribute{
 		MarkdownDescription: "The token of K3S to be used in the configuration of the K3S Cluster.",
 		Required:            true,
+		Sensitive:           true,
 	},
 	"k3s_version": schema.StringAttribute{
 		MarkdownDescription: "The version of K3S to be used in the configuration of the K3S Cluster.",
