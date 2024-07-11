@@ -18,35 +18,35 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &YoshiK3SMasterNodeResource{}
-var _ resource.ResourceWithImportState = &YoshiK3SMasterNodeResource{}
+var _ resource.Resource = &YoshiK3SWorkerNodeResource{}
+var _ resource.ResourceWithImportState = &YoshiK3SWorkerNodeResource{}
 
-func NewYoshiK3SMasterNodeResource() resource.Resource {
-	return &YoshiK3SMasterNodeResource{}
+func NewYoshiK3SWorkerNodeResource() resource.Resource {
+	return &YoshiK3SWorkerNodeResource{}
 }
 
-// YoshiK3SMasterNodeResource defines the resource implementation.
-type YoshiK3SMasterNodeResource struct{}
+// YoshiK3SWorkerNodeResource defines the resource implementation.
+type YoshiK3SWorkerNodeResource struct{}
 
-func (r *YoshiK3SMasterNodeResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_master_node"
+func (r *YoshiK3SWorkerNodeResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_worker_node"
 }
 
-func (r *YoshiK3SMasterNodeResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *YoshiK3SWorkerNodeResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
 		MarkdownDescription: "K3S Master Node Resource",
 
-		Attributes: model.YoshiK3SMasterNodeResourceModelSchema,
+		Attributes: model.YoshiK3SWorkerNodeResourceModelSchema,
 	}
 }
 
-func (r *YoshiK3SMasterNodeResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *YoshiK3SWorkerNodeResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	//	No configuration is needed for this resource.
 }
 
-func (r *YoshiK3SMasterNodeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data model.YoshiK3SMasterNodeResourceModel
+func (r *YoshiK3SWorkerNodeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data model.YoshiK3SWorkerNodeResourceModel
 
 	// Read Terraform plan data into the model
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
@@ -73,7 +73,7 @@ func (r *YoshiK3SMasterNodeResource) Create(ctx context.Context, req resource.Cr
 	}
 	options := r.createNodeOptionsFromModel(data)
 
-	err := client.ConfigureMasterNode(
+	err := client.ConfigureWorkerNode(
 		*nodeConfig,
 		options,
 	)
@@ -86,16 +86,13 @@ func (r *YoshiK3SMasterNodeResource) Create(ctx context.Context, req resource.Cr
 	//// Documentation: https://terraform.io/plugin/log
 	tflog.Trace(ctx, "created a resource")
 	data.Id = types.StringValue(data.Connection.Attributes()["host"].String())
-	data.ServerAddress = types.StringValue(
-		r.parseSshConnectionModel(data.Connection).Host.ValueString(),
-	)
 	//
 	//// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *YoshiK3SMasterNodeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data model.YoshiK3SMasterNodeResourceModel
+func (r *YoshiK3SWorkerNodeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data model.YoshiK3SWorkerNodeResourceModel
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -106,8 +103,8 @@ func (r *YoshiK3SMasterNodeResource) Read(ctx context.Context, req resource.Read
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *YoshiK3SMasterNodeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data model.YoshiK3SMasterNodeResourceModel
+func (r *YoshiK3SWorkerNodeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data model.YoshiK3SWorkerNodeResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
@@ -133,7 +130,7 @@ func (r *YoshiK3SMasterNodeResource) Update(ctx context.Context, req resource.Up
 	}
 	options := r.createNodeOptionsFromModel(data)
 
-	err := client.ConfigureMasterNode(
+	err := client.ConfigureWorkerNode(
 		*nodeConfig,
 		options,
 	)
@@ -145,8 +142,8 @@ func (r *YoshiK3SMasterNodeResource) Update(ctx context.Context, req resource.Up
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *YoshiK3SMasterNodeResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data model.YoshiK3SMasterNodeResourceModel
+func (r *YoshiK3SWorkerNodeResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data model.YoshiK3SWorkerNodeResourceModel
 
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -168,7 +165,7 @@ func (r *YoshiK3SMasterNodeResource) Delete(ctx context.Context, req resource.De
 		return
 	}
 
-	err := client.DestroyMasterNode(
+	err := client.DestroyWorkerNode(
 		*nodeConfig,
 	)
 	if err != nil {
@@ -181,11 +178,11 @@ func (r *YoshiK3SMasterNodeResource) Delete(ctx context.Context, req resource.De
 	}
 }
 
-func (r *YoshiK3SMasterNodeResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *YoshiK3SWorkerNodeResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-func (r *YoshiK3SMasterNodeResource) createClientFromModel(data model.YoshiK3SMasterNodeResourceModel) *cluster.K3sCluster {
+func (r *YoshiK3SWorkerNodeResource) createClientFromModel(data model.YoshiK3SWorkerNodeResourceModel) *cluster.K3sCluster {
 	if data.Cluster.IsNull() || data.Cluster.IsUnknown() {
 		return nil
 	}
@@ -202,13 +199,21 @@ func (r *YoshiK3SMasterNodeResource) createClientFromModel(data model.YoshiK3SMa
 	return cluster.NewK3sClientWithVersion(k3sVersion, k3sToken)
 }
 
-func (r *YoshiK3SMasterNodeResource) createNodeConfigFromModel(data model.YoshiK3SMasterNodeResourceModel) *resources.K3sMasterNodeConfig {
-	return resources.NewK3sMasterNodeConfig(r.createSshConfigFromModel(data))
+func (r *YoshiK3SWorkerNodeResource) createNodeConfigFromModel(data model.YoshiK3SWorkerNodeResourceModel) *resources.K3sWorkerNodeConfig {
+	return resources.NewK3sWorkerNodeConfig(
+		data.MasterNodeServerAddress.ValueString(),
+		r.createSshConfigFromModel(data),
+	)
 }
 
-func (r *YoshiK3SMasterNodeResource) createSshConfigFromModel(data model.YoshiK3SMasterNodeResourceModel) *ssh_handler.SshConfig {
-	connectionModel := r.parseSshConnectionModel(data.Connection)
-	if connectionModel == nil {
+func (r *YoshiK3SWorkerNodeResource) createSshConfigFromModel(data model.YoshiK3SWorkerNodeResourceModel) *ssh_handler.SshConfig {
+	if data.Connection.IsNull() || data.Connection.IsUnknown() {
+		return nil
+	}
+
+	var connectionModel model.YoshiK3SConnectionModel
+	diags := data.Connection.As(context.Background(), &connectionModel, basetypes.ObjectAsOptions{})
+	if diags.HasError() {
 		return nil
 	}
 
@@ -243,21 +248,7 @@ func (r *YoshiK3SMasterNodeResource) createSshConfigFromModel(data model.YoshiK3
 	)
 }
 
-func (r *YoshiK3SMasterNodeResource) parseSshConnectionModel(data types.Object) *model.YoshiK3SConnectionModel {
-	if data.IsNull() || data.IsUnknown() {
-		return nil
-	}
-
-	var connectionModel model.YoshiK3SConnectionModel
-	diags := data.As(context.Background(), &connectionModel, basetypes.ObjectAsOptions{})
-	if diags.HasError() {
-		return nil
-	}
-
-	return &connectionModel
-}
-
-func (r *YoshiK3SMasterNodeResource) createNodeOptionsFromModel(model model.YoshiK3SMasterNodeResourceModel) []string {
+func (r *YoshiK3SWorkerNodeResource) createNodeOptionsFromModel(model model.YoshiK3SWorkerNodeResourceModel) []string {
 	if model.Options.IsNull() || model.Options.IsUnknown() {
 		return []string{}
 	}

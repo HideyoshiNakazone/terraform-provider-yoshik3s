@@ -36,3 +36,25 @@ resource "yoshik3s_master_node" "example_master_node" {
 		"--snapshotter native",
     ]
 }
+
+
+resource "yoshik3s_worker_node" "example_worker_node" {
+    master_server_address = "master_node"
+
+    cluster = {
+        token = yoshik3s_cluster.example_cluster.token
+        k3s_version = yoshik3s_cluster.example_cluster.k3s_version
+    }
+
+    node_connection = {
+        host = "localhost"
+        port = "3333"
+        user = "sshuser"
+        password = "password"
+    }
+
+    node_options = [
+		"--node-label node_type=worker",
+		"--snapshotter native",
+    ]
+}

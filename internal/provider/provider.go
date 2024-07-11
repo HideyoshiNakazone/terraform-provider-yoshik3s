@@ -44,6 +44,7 @@ func (p *YoshiK3SProvider) Resources(ctx context.Context) []func() resource.Reso
 	return []func() resource.Resource{
 		internalresource.NewYoshiK3SClusterResource,
 		internalresource.NewYoshiK3SMasterNodeResource,
+		internalresource.NewYoshiK3SWorkerNodeResource,
 	}
 }
 

@@ -7,11 +7,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// YoshiK3SMasterNodeResourceModel describes the resource data model.
-type YoshiK3SMasterNodeResourceModel struct {
+// YoshiK3SWorkerNodeResourceModel describes the resource data model.
+type YoshiK3SWorkerNodeResourceModel struct {
 	Id types.String `tfsdk:"id"`
 
-	ServerAddress types.String `tfsdk:"server_address"`
+	MasterNodeServerAddress types.String `tfsdk:"master_server_address"`
 
 	Cluster    types.Object `tfsdk:"cluster"`
 	Connection types.Object `tfsdk:"node_connection"`
@@ -19,7 +19,7 @@ type YoshiK3SMasterNodeResourceModel struct {
 	Options types.List `tfsdk:"node_options"`
 }
 
-var YoshiK3SMasterNodeResourceModelSchema = map[string]schema.Attribute{
+var YoshiK3SWorkerNodeResourceModelSchema = map[string]schema.Attribute{
 	"id": schema.StringAttribute{
 		MarkdownDescription: "The ID of the master node.",
 		Computed:            true,
@@ -27,9 +27,9 @@ var YoshiK3SMasterNodeResourceModelSchema = map[string]schema.Attribute{
 			stringplanmodifier.UseStateForUnknown(),
 		},
 	},
-	"server_address": schema.StringAttribute{
+	"master_server_address": schema.StringAttribute{
 		MarkdownDescription: "The address of the master node.",
-		Computed:            true,
+		Required:            true,
 	},
 	"cluster": schema.SingleNestedAttribute{
 		MarkdownDescription: "The cluster to which the master node belongs.",
