@@ -56,32 +56,7 @@ var YoshiK3SMasterNodeResourceModelSchema = map[string]schema.Attribute{
 	"node_connection": schema.SingleNestedAttribute{
 		MarkdownDescription: "The connection details of the master node.",
 		Required:            true,
-		Attributes: map[string]schema.Attribute{
-			"host": schema.StringAttribute{
-				MarkdownDescription: "The hostname or IP address of the master node.",
-				Required:            true,
-			},
-			"port": schema.StringAttribute{
-				MarkdownDescription: "The SSH port of the master node.",
-				Required:            true,
-			},
-			"user": schema.StringAttribute{
-				MarkdownDescription: "The SSH user of the master node.",
-				Required:            true,
-			},
-			"password": schema.StringAttribute{
-				MarkdownDescription: "The SSH password of the master node.",
-				Optional:            true,
-			},
-			"private_key": schema.StringAttribute{
-				MarkdownDescription: "The SSH private key of the master node.",
-				Optional:            true,
-			},
-			"private_key_passphrase": schema.StringAttribute{
-				MarkdownDescription: "The passphrase for the SSH private key of the master node.",
-				Optional:            true,
-			},
-		},
+		Attributes:          YoshiK3SConnectionModelSchema,
 	},
 	"node_options": schema.ListAttribute{
 		MarkdownDescription: "The options of the master node.",
