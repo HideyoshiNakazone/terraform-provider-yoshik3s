@@ -5,7 +5,7 @@ package provider
 
 import (
 	"context"
-	internalresource "github.com/HideyoshiNakazone/terraform-provider-yoshi-k3s/internal/resource"
+	internalresource "github.com/HideyoshiNakazone/terraform-provider-yoshik3s/internal/resource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"

@@ -1,4 +1,4 @@
-module github.com/HideyoshiNakazone/terraform-provider-yoshi-k3s
+module github.com/HideyoshiNakazone/terraform-provider-yoshik3s
 
 go 1.22.5
 

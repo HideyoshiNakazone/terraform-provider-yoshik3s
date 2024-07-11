@@ -5,7 +5,7 @@ package resource
 
 import (
 	"context"
-	"github.com/HideyoshiNakazone/terraform-provider-yoshi-k3s/internal/model"
+	"github.com/HideyoshiNakazone/terraform-provider-yoshik3s/internal/model"
 	"github.com/HideyoshiNakazone/yoshi-k3s/pkg/cluster"
 	"github.com/HideyoshiNakazone/yoshi-k3s/pkg/resources"
 	"github.com/HideyoshiNakazone/yoshi-k3s/pkg/ssh_handler"

@@ -2,7 +2,7 @@ package resource
 
 import (
 	"context"
-	"github.com/HideyoshiNakazone/terraform-provider-yoshi-k3s/internal/model"
+	"github.com/HideyoshiNakazone/terraform-provider-yoshik3s/internal/model"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"

@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     yoshik3s = {
-      source = "registry.terraform.io/HideyoshiNakazone/yoshi-k3s"
+      source = "registry.terraform.io/HideyoshiNakazone/yoshik3s"
     }
   }
 }
