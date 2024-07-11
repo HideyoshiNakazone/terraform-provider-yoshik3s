@@ -6,17 +6,33 @@ terraform {
     }
 }
 
+
 provider "yoshik3s" {}
 
 
-resource "yoshik3s_master_node" "master_node" {
-    version = "v1.21.4+k3s1"
-    token = "secret_cluster_token"
+resource "yoshik3s_cluster" "example_cluster" {
+    name = "example-cluster"
+    token = "example_token"
+    k3s_version = "v1.30.2+k3s2"
+}
+
+
+resource "yoshik3s_master_node" "example_master_node" {
+    cluster = {
+        token = yoshik3s_cluster.example_cluster.token
+        k3s_version = yoshik3s_cluster.example_cluster.k3s_version
+    }
 
     node_connection = {
-        host = "127.0.0.1"
+        host = "localhost"
         port = "2222"
         user = "sshuser"
         password = "password"
     }
+
+    node_options = [
+		"--disable traefik",
+		"--node-label node_type=master",
+		"--snapshotter native",
+    ]
 }
