@@ -18,10 +18,7 @@ resource "yoshik3s_cluster" "example_cluster" {
 
 
 resource "yoshik3s_master_node" "example_master_node" {
-  cluster = {
-    token       = yoshik3s_cluster.example_cluster.token
-    k3s_version = yoshik3s_cluster.example_cluster.k3s_version
-  }
+  cluster = yoshik3s_cluster.example_cluster
 
   node_connection = {
     host     = "localhost"
@@ -51,10 +48,7 @@ locals {
 resource "yoshik3s_worker_node" "example_worker_node" {
   master_server_address = "master_node"
 
-  cluster = {
-    token       = yoshik3s_cluster.example_cluster.token
-    k3s_version = yoshik3s_cluster.example_cluster.k3s_version
-  }
+  cluster = yoshik3s_cluster.example_cluster
 
   for_each = local.example_cluster_workers
 
