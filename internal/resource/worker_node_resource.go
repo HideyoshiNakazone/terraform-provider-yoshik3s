@@ -195,13 +195,14 @@ func (r *YoshiK3SWorkerNodeResource) createClientFromModel(data model.YoshiK3SWo
 
 	k3sVersion := clusterModel.ClusterVersion.ValueString()
 	k3sToken := clusterModel.ClusterToken.ValueString()
+	k3sServerAddress := clusterModel.ClusterServerAddress.ValueString()
 
-	return cluster.NewK3sClientWithVersion(k3sVersion, k3sToken)
+	return cluster.NewK3sClientWithVersion(k3sVersion, k3sToken, k3sServerAddress)
 }
 
-func (r *YoshiK3SWorkerNodeResource) createNodeConfigFromModel(data model.YoshiK3SWorkerNodeResourceModel) *resources.K3sWorkerNodeConfig {
-	return resources.NewK3sWorkerNodeConfig(
-		data.MasterNodeServerAddress.ValueString(),
+func (r *YoshiK3SWorkerNodeResource) createNodeConfigFromModel(data model.YoshiK3SWorkerNodeResourceModel) *resources.NodeConfig {
+	return resources.NewNodeConfig(
+		data.Connection.Attributes()["host"].String(),
 		r.createSshConfigFromModel(data),
 	)
 }

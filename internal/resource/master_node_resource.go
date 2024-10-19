@@ -5,6 +5,7 @@ package resource
 
 import (
 	"context"
+	"fmt"
 	"github.com/HideyoshiNakazone/terraform-provider-yoshik3s/internal/model"
 	"github.com/HideyoshiNakazone/yoshi-k3s/pkg/cluster"
 	"github.com/HideyoshiNakazone/yoshi-k3s/pkg/resources"
@@ -55,6 +56,12 @@ func (r *YoshiK3SMasterNodeResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 
+	// Add a warning writting all data: Kubeconfig, Cluster, Connection, Options
+	resp.Diagnostics.AddWarning("Info KUBECONFIG", fmt.Sprintf("Kubeconfig: %s", data.Kubeconfig))
+	resp.Diagnostics.AddWarning("Info Cluster", fmt.Sprintf("Cluster: %s", data.Cluster.String()))
+	resp.Diagnostics.AddWarning("Info Connection", fmt.Sprintf("Connection: %s", data.Connection.String()))
+	resp.Diagnostics.AddWarning("Info Options", fmt.Sprintf("Options: %s", data.Options.String()))
+
 	client := r.createClientFromModel(data)
 	if client == nil {
 		resp.Diagnostics.AddError(
@@ -73,7 +80,7 @@ func (r *YoshiK3SMasterNodeResource) Create(ctx context.Context, req resource.Cr
 	}
 	options := r.createNodeOptionsFromModel(data)
 
-	err := client.ConfigureMasterNode(
+	kubeconfig, err := client.ConfigureMasterNode(
 		*nodeConfig,
 		options,
 	)
@@ -86,10 +93,8 @@ func (r *YoshiK3SMasterNodeResource) Create(ctx context.Context, req resource.Cr
 	//// Documentation: https://terraform.io/plugin/log
 	tflog.Trace(ctx, "created a resource")
 	data.Id = types.StringValue(data.Connection.Attributes()["host"].String())
-	data.ServerAddress = types.StringValue(
-		r.parseSshConnectionModel(data.Connection).Host.ValueString(),
-	)
-	//
+	data.Kubeconfig = types.StringValue(string((*kubeconfig)[:]))
+
 	//// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -115,6 +120,12 @@ func (r *YoshiK3SMasterNodeResource) Update(ctx context.Context, req resource.Up
 		return
 	}
 
+	// Add a warning writting all data: Kubeconfig, Cluster, Connection, Options
+	resp.Diagnostics.AddWarning("Info", fmt.Sprintf("Kubeconfig: %s", data.Kubeconfig))
+	resp.Diagnostics.AddWarning("Info", fmt.Sprintf("Cluster: %s", data.Cluster.String()))
+	resp.Diagnostics.AddWarning("Info", fmt.Sprintf("Connection: %s", data.Connection.String()))
+	resp.Diagnostics.AddWarning("Info", fmt.Sprintf("Options: %s", data.Options.String()))
+
 	client := r.createClientFromModel(data)
 	if client == nil {
 		resp.Diagnostics.AddError(
@@ -133,7 +144,7 @@ func (r *YoshiK3SMasterNodeResource) Update(ctx context.Context, req resource.Up
 	}
 	options := r.createNodeOptionsFromModel(data)
 
-	err := client.ConfigureMasterNode(
+	kubeconfig, err := client.ConfigureMasterNode(
 		*nodeConfig,
 		options,
 	)
@@ -141,6 +152,7 @@ func (r *YoshiK3SMasterNodeResource) Update(ctx context.Context, req resource.Up
 		resp.Diagnostics.AddError("failed to update master node", err.Error())
 		return
 	}
+	data.Kubeconfig = types.StringValue(string((*kubeconfig)[:]))
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -198,12 +210,16 @@ func (r *YoshiK3SMasterNodeResource) createClientFromModel(data model.YoshiK3SMa
 
 	k3sVersion := clusterModel.ClusterVersion.ValueString()
 	k3sToken := clusterModel.ClusterToken.ValueString()
+	k3sServerAddress := clusterModel.ClusterServerAddress.ValueString()
 
-	return cluster.NewK3sClientWithVersion(k3sVersion, k3sToken)
+	return cluster.NewK3sClientWithVersion(k3sVersion, k3sToken, k3sServerAddress)
 }
 
-func (r *YoshiK3SMasterNodeResource) createNodeConfigFromModel(data model.YoshiK3SMasterNodeResourceModel) *resources.K3sMasterNodeConfig {
-	return resources.NewK3sMasterNodeConfig(r.createSshConfigFromModel(data))
+func (r *YoshiK3SMasterNodeResource) createNodeConfigFromModel(data model.YoshiK3SMasterNodeResourceModel) *resources.NodeConfig {
+	return resources.NewNodeConfig(
+		data.Connection.Attributes()["host"].String(),
+		r.createSshConfigFromModel(data),
+	)
 }
 
 func (r *YoshiK3SMasterNodeResource) createSshConfigFromModel(data model.YoshiK3SMasterNodeResourceModel) *ssh_handler.SshConfig {

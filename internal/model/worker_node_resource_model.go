@@ -11,8 +11,6 @@ import (
 type YoshiK3SWorkerNodeResourceModel struct {
 	Id types.String `tfsdk:"id"`
 
-	MasterNodeServerAddress types.String `tfsdk:"master_server_address"`
-
 	Cluster    types.Object `tfsdk:"cluster"`
 	Connection types.Object `tfsdk:"node_connection"`
 
@@ -27,11 +25,6 @@ var YoshiK3SWorkerNodeResourceModelSchema = map[string]schema.Attribute{
 		PlanModifiers: []planmodifier.String{
 			stringplanmodifier.UseStateForUnknown(),
 		},
-	},
-	"master_server_address": schema.StringAttribute{
-		Description:         "The address of the master node.",
-		MarkdownDescription: "The address of the master node.",
-		Required:            true,
 	},
 	"cluster": schema.SingleNestedAttribute{
 		Description:         nodeResourceDescriptions["cluster"],
@@ -51,6 +44,11 @@ var YoshiK3SWorkerNodeResourceModelSchema = map[string]schema.Attribute{
 			"token": schema.StringAttribute{
 				MarkdownDescription: clusterResourceDescriptions["token"],
 				Description:         clusterResourceDescriptions["token"],
+				Required:            true,
+			},
+			"server_address": schema.StringAttribute{
+				MarkdownDescription: clusterResourceDescriptions["server_address"],
+				Description:         clusterResourceDescriptions["server_address"],
 				Required:            true,
 			},
 			"k3s_version": schema.StringAttribute{

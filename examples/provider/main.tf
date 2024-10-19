@@ -11,9 +11,10 @@ provider "yoshik3s" {}
 
 
 resource "yoshik3s_cluster" "example_cluster" {
-  name        = "example-cluster"
-  token       = "example_token"
-  k3s_version = "v1.30.2+k3s2"
+  name           = "example-cluster"
+  token          = "example_token"
+  server_address = "master_node"
+  k3s_version    = "v1.30.2+k3s2"
 }
 
 
@@ -46,8 +47,6 @@ locals {
 
 
 resource "yoshik3s_worker_node" "example_worker_node" {
-  master_server_address = "master_node"
-
   cluster = yoshik3s_cluster.example_cluster
 
   for_each = local.example_cluster_workers
@@ -63,4 +62,10 @@ resource "yoshik3s_worker_node" "example_worker_node" {
     "--node-label node_type=worker",
     "--snapshotter native",
   ]
+}
+
+
+output "example_main_node_kubeconfig" {
+  value = yoshik3s_master_node.example_master_node.kubeconfig
+  sensitive = true
 }
