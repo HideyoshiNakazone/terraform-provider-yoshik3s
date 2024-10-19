@@ -61,9 +61,9 @@ var YoshiK3SMasterNodeResourceModelSchema = map[string]schema.Attribute{
 				Description:         clusterResourceDescriptions["token"],
 				Required:            true,
 			},
-			"server_address": schema.StringAttribute{
-				MarkdownDescription: clusterResourceDescriptions["server_address"],
-				Description:         clusterResourceDescriptions["server_address"],
+			"address": schema.StringAttribute{
+				MarkdownDescription: clusterResourceDescriptions["address"],
+				Description:         clusterResourceDescriptions["address"],
 				Required:            true,
 			},
 			"k3s_version": schema.StringAttribute{

@@ -210,9 +210,9 @@ func (r *YoshiK3SMasterNodeResource) createClientFromModel(data model.YoshiK3SMa
 
 	k3sVersion := clusterModel.ClusterVersion.ValueString()
 	k3sToken := clusterModel.ClusterToken.ValueString()
-	k3sServerAddress := clusterModel.ClusterServerAddress.ValueString()
+	k3sClusterAddress := clusterModel.ClusterAddress.ValueString()
 
-	return cluster.NewK3sClientWithVersion(k3sVersion, k3sToken, k3sServerAddress)
+	return cluster.NewK3sClientWithVersion(k3sVersion, k3sToken, k3sClusterAddress)
 }
 
 func (r *YoshiK3SMasterNodeResource) createNodeConfigFromModel(data model.YoshiK3SMasterNodeResourceModel) *resources.NodeConfig {

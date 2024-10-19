@@ -13,7 +13,7 @@ provider "yoshik3s" {}
 resource "yoshik3s_cluster" "example_cluster" {
   name           = "example-cluster"
   token          = "example_token"
-  server_address = "master_node"
+  address 		 = "master_node"
   k3s_version    = "v1.30.2+k3s2"
 }
 
@@ -62,6 +62,8 @@ resource "yoshik3s_worker_node" "example_worker_node" {
     "--node-label node_type=worker",
     "--snapshotter native",
   ]
+
+  depends_on = [yoshik3s_master_node.example_master_node]
 }
 
 
