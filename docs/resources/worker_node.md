@@ -18,7 +18,6 @@ K3S Master Node Resource
 ### Required
 
 - `cluster` (Attributes) The cluster to which the node belongs. (see [below for nested schema](#nestedatt--cluster))
-- `master_server_address` (String) The address of the master node.
 - `node_connection` (Attributes) The connection details of the node. (see [below for nested schema](#nestedatt--node_connection))
 
 ### Optional
@@ -34,6 +33,7 @@ K3S Master Node Resource
 
 Required:
 
+- `address` (String) The server address of the K3S Cluster.
 - `token` (String) The token of K3S to be used in the configuration of the K3S Cluster.
 
 Optional:

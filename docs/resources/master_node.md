@@ -27,13 +27,14 @@ K3S Master Node Resource
 ### Read-Only
 
 - `id` (String) The ID of the node.
-- `server_address` (String) The address of the master node.
+- `kubeconfig` (String) The kubeconfig of the node.
 
 <a id="nestedatt--cluster"></a>
 ### Nested Schema for `cluster`
 
 Required:
 
+- `address` (String) The server address of the K3S Cluster.
 - `token` (String) The token of K3S to be used in the configuration of the K3S Cluster.
 
 Optional:

@@ -11,7 +11,7 @@ import (
 type YoshiK3SMasterNodeResourceModel struct {
 	Id types.String `tfsdk:"id"`
 
-	ServerAddress types.String `tfsdk:"server_address"`
+	Kubeconfig types.String `tfsdk:"kubeconfig"`
 
 	Cluster    types.Object `tfsdk:"cluster"`
 	Connection types.Object `tfsdk:"node_connection"`
@@ -21,7 +21,7 @@ type YoshiK3SMasterNodeResourceModel struct {
 
 var nodeResourceDescriptions = map[string]string{
 	"id":              "The ID of the node.",
-	"server_address":  "The address of the node.",
+	"kubeconfig":      "The kubeconfig of the node.",
 	"cluster":         "The cluster to which the node belongs.",
 	"node_connection": "The connection details of the node.",
 	"node_options":    "The options of the node.",
@@ -36,9 +36,9 @@ var YoshiK3SMasterNodeResourceModelSchema = map[string]schema.Attribute{
 			stringplanmodifier.UseStateForUnknown(),
 		},
 	},
-	"server_address": schema.StringAttribute{
-		Description:         "The address of the master node.",
-		MarkdownDescription: "The address of the master node.",
+	"kubeconfig": schema.StringAttribute{
+		Description:         nodeResourceDescriptions["kubeconfig"],
+		MarkdownDescription: nodeResourceDescriptions["kubeconfig"],
 		Computed:            true,
 	},
 	"cluster": schema.SingleNestedAttribute{
@@ -59,6 +59,11 @@ var YoshiK3SMasterNodeResourceModelSchema = map[string]schema.Attribute{
 			"token": schema.StringAttribute{
 				MarkdownDescription: clusterResourceDescriptions["token"],
 				Description:         clusterResourceDescriptions["token"],
+				Required:            true,
+			},
+			"address": schema.StringAttribute{
+				MarkdownDescription: clusterResourceDescriptions["address"],
+				Description:         clusterResourceDescriptions["address"],
 				Required:            true,
 			},
 			"k3s_version": schema.StringAttribute{

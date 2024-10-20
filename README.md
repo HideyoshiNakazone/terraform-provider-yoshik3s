@@ -65,6 +65,7 @@ but it is recommended to use it to avoid inconsistency between nodes.
 resource "yoshik3s_cluster" "example_cluster" {
   name        = "example-cluster"
   token       = "{K3S_TOKEN}"
+  address     = "{K3S_ADDRESS}"
   k3s_version = "{K3S_VERSION}"
 }
 ```
@@ -77,6 +78,7 @@ This resource is used to create and manage the configuration of a K3s master nod
 resource "yoshik3s_master_node" "example_master_node" {
   cluster = {
     token       = yoshik3s_cluster.example_cluster.token
+    address     = yoshik3s_cluster.example_cluster.address
     k3s_version = yoshik3s_cluster.example_cluster.k3s_version
   }
 
@@ -105,10 +107,9 @@ This resource is used to create and manage the configuration of a K3s worker nod
 
 ```hcl
 resource "yoshik3s_worker_node" "example_worker_node" {
-  master_server_address = "{MASTER_SERVER_ADDRESS}"
-
   cluster = {
     token       = yoshik3s_cluster.example_cluster.token
+    address     = yoshik3s_cluster.example_cluster.address
     k3s_version = yoshik3s_cluster.example_cluster.k3s_version
   }
 
