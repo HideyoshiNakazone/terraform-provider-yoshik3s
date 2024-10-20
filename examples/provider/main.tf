@@ -11,10 +11,10 @@ provider "yoshik3s" {}
 
 
 resource "yoshik3s_cluster" "example_cluster" {
-  name           = "example-cluster"
-  token          = "example_token"
-  address 		 = "master_node"
-  k3s_version    = "v1.30.2+k3s2"
+  name        = "example-cluster"
+  token       = "example_token"
+  address     = "master_node"
+  k3s_version = "v1.30.2+k3s2"
 }
 
 
@@ -68,6 +68,6 @@ resource "yoshik3s_worker_node" "example_worker_node" {
 
 
 output "example_main_node_kubeconfig" {
-  value = yoshik3s_master_node.example_master_node.kubeconfig
+  value     = yoshik3s_master_node.example_master_node.kubeconfig
   sensitive = true
 }

@@ -17,6 +17,7 @@ K3S Cluster Resource
 
 ### Required
 
+- `address` (String) The server address of the K3S Cluster.
 - `token` (String, Sensitive) The token of K3S to be used in the configuration of the K3S Cluster.
 
 ### Optional
