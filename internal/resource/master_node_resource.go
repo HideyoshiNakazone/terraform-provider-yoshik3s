@@ -5,7 +5,6 @@ package resource
 
 import (
 	"context"
-	"fmt"
 	"github.com/HideyoshiNakazone/terraform-provider-yoshik3s/internal/model"
 	"github.com/HideyoshiNakazone/yoshi-k3s/pkg/cluster"
 	"github.com/HideyoshiNakazone/yoshi-k3s/pkg/resources"
@@ -55,12 +54,6 @@ func (r *YoshiK3SMasterNodeResource) Create(ctx context.Context, req resource.Cr
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
-	// Add a warning writting all data: Kubeconfig, Cluster, Connection, Options
-	resp.Diagnostics.AddWarning("Info KUBECONFIG", fmt.Sprintf("Kubeconfig: %s", data.Kubeconfig))
-	resp.Diagnostics.AddWarning("Info Cluster", fmt.Sprintf("Cluster: %s", data.Cluster.String()))
-	resp.Diagnostics.AddWarning("Info Connection", fmt.Sprintf("Connection: %s", data.Connection.String()))
-	resp.Diagnostics.AddWarning("Info Options", fmt.Sprintf("Options: %s", data.Options.String()))
 
 	client := r.createClientFromModel(data)
 	if client == nil {
@@ -119,12 +112,6 @@ func (r *YoshiK3SMasterNodeResource) Update(ctx context.Context, req resource.Up
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
-	// Add a warning writting all data: Kubeconfig, Cluster, Connection, Options
-	resp.Diagnostics.AddWarning("Info", fmt.Sprintf("Kubeconfig: %s", data.Kubeconfig))
-	resp.Diagnostics.AddWarning("Info", fmt.Sprintf("Cluster: %s", data.Cluster.String()))
-	resp.Diagnostics.AddWarning("Info", fmt.Sprintf("Connection: %s", data.Connection.String()))
-	resp.Diagnostics.AddWarning("Info", fmt.Sprintf("Options: %s", data.Options.String()))
 
 	client := r.createClientFromModel(data)
 	if client == nil {
