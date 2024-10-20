@@ -40,6 +40,7 @@ var YoshiK3SMasterNodeResourceModelSchema = map[string]schema.Attribute{
 		Description:         nodeResourceDescriptions["kubeconfig"],
 		MarkdownDescription: nodeResourceDescriptions["kubeconfig"],
 		Computed:            true,
+		Sensitive:           true,
 	},
 	"cluster": schema.SingleNestedAttribute{
 		Description:         nodeResourceDescriptions["cluster"],
