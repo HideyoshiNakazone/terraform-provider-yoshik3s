@@ -3,13 +3,11 @@ module github.com/HideyoshiNakazone/terraform-provider-yoshik3s
 go 1.22.5
 
 require (
-	github.com/HideyoshiNakazone/yoshi-k3s v1.0.2
+	github.com/HideyoshiNakazone/yoshi-k3s v1.1.0-rc.1
 	github.com/hashicorp/terraform-plugin-docs v0.19.4
 	github.com/hashicorp/terraform-plugin-framework v1.12.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 )
-
-replace github.com/HideyoshiNakazone/yoshi-k3s => ../yoshi-k3s
 
 require (
 	github.com/BurntSushi/toml v1.2.1 // indirect
