@@ -27,7 +27,7 @@ K3S Master Node Resource
 ### Read-Only
 
 - `id` (String) The ID of the node.
-- `kubeconfig` (String) The kubeconfig of the node.
+- `kubeconfig` (String, Sensitive) The kubeconfig of the node.
 
 <a id="nestedatt--cluster"></a>
 ### Nested Schema for `cluster`
